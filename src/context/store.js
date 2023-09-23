@@ -10,8 +10,9 @@ const Provider = ({ children }) => {
 
     const [darkMode, setDarkMode] = useState(storedDarkMode);
     const [searchTerm, setSearchTerm] = useState(false);
+    const [searchHistory, setSearchHistory] = useState([]);
 
-    return <Ctx.Provider value={{darkMode, setDarkMode, searchTerm, setSearchTerm}}>{children}</Ctx.Provider>
+    return <Ctx.Provider value={{darkMode, setDarkMode, searchTerm, setSearchTerm, searchHistory, setSearchHistory}}>{children}</Ctx.Provider>
 }
 
 export default Provider;

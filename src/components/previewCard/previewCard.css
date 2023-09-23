@@ -1,0 +1,13 @@
+.preview-card-wrapper {
+    max-width: 60rem;
+    min-height: 10rem;
+    border: 1px solid gray;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 1px 0px 8px gray;
+}
+
+.preview-card-wrapper img {
+    width: 100%;
+}

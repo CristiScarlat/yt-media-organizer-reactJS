@@ -16,6 +16,8 @@ body {
 
 main {
   flex: 1;
+  margin-top: 3.5rem;
+  scroll-behavior: smooth;
 }
 
 .dark-mode {

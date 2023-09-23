@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { Link } from 'react-router-dom'
 import { Ctx } from '../../context/store';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -11,7 +12,7 @@ import { GoSun, GoMoon } from 'react-icons/go';
 
 
 const Header = () => {
-    const { setDarkMode, darkMode, setSearchTerm } = useContext(Ctx);
+    const { setDarkMode, darkMode, setSearchTerm, setSearchHistory, searchHistory } = useContext(Ctx);
     const expand = 'lg'
 
     const handleDarkMode = () => {
@@ -23,12 +24,25 @@ const Header = () => {
 
     const handleSearchTerm = (e) => {
         e.preventDefault();
-        if(e.target[0].value && e.target[0].value !== "")setSearchTerm(e.target[0].value);
+        if(e.target[0].value && e.target[0].value !== ""){
+            setSearchTerm(e.target[0].value);
+            if(!searchHistory.find(item => item.q === e.target[0].value)){
+                const historyObj = {
+                    date: new Date().toString(),
+                    q: e.target[0].value
+                }
+                setSearchHistory((state) => {
+                    localStorage.setItem("searchHistory", JSON.stringify([...state, historyObj]));
+                    return [...state, historyObj]
+                })
+            }
+        }
     }
 
+    console.log(searchHistory)
     return (
         <>
-            <Navbar expand={expand} bg={darkMode ? "dark" : "light"} variant={darkMode ? "dark" : "light"}>
+            <Navbar expand={expand} bg={darkMode ? "dark" : "light"} variant={darkMode ? "dark" : "light"} fixed='top'>
                 <Container fluid>
                     <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
@@ -44,8 +58,8 @@ const Header = () => {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3">
-                                <Nav.Link href="#action1">Home</Nav.Link>
-                                <Nav.Link href="#action2">Link</Nav.Link>
+                                <Link to="/" className="nav-link">Home</Link>
+                                <Link to="/history" className="nav-link">History</Link>
                             </Nav>
                             <Form className="d-flex" onSubmit={handleSearchTerm}>
                                 <Form.Control

@@ -11,15 +11,19 @@ const yt = axios.create({
 });
 
 
-export const ytSearch = async searchTerm => {
+export const ytSearch = async (searchTerm, pageToken) => {
+    const params = {
+        q: searchTerm,
+        part: 'snippet',
+        //pageToken: "CA8QAA",
+        maxResults: 10,
+        type: 'video',
+        key: process.env.REACT_APP_GOOGLE_KEY,
+    }
+
+    if(pageToken)params.pageToken = pageToken;
+    
     return await yt.get('/search', {
-        params: {
-            q: searchTerm,
-            part: 'snippet',
-            pageToken: "CA8QAA",
-            //maxResults: 5,
-            type: 'video',
-            key: process.env.REACT_APP_GOOGLE_KEY,
-        },
+        params: params,
     });
 };
