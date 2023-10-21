@@ -1,9 +1,10 @@
 import { Col, Row, Spinner } from "react-bootstrap";
 import "./previewCard.css";
 import { useState } from "react";
+import { FcLike } from "react-icons/fc";
 
 
-const PreviewCard = ({ data, className }) => {
+const PreviewCard = ({ data, className, theme, onHeartClick }) => {
     const [iframeOnLoad, setIframeOnLoad] = useState(false);
 
     return (
@@ -19,7 +20,7 @@ const PreviewCard = ({ data, className }) => {
                             src={`https://www.youtube.com/embed/${data?.id?.videoId}`}
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowFullScreen></iframe>
-                        <Spinner variant="light" style={{visibility: !iframeOnLoad ? "visible" : "hidden", position: "absolute", top: '50%', left: '50%'}}/>
+                        <Spinner variant={theme ? "light" : "dark"} style={{visibility: !iframeOnLoad ? "visible" : "hidden", position: "absolute", top: '50%', left: '50%'}}/>
                     </div>
                 </Col>
                 <Col xs={12} lg={6}>
@@ -27,6 +28,9 @@ const PreviewCard = ({ data, className }) => {
                     <p>{data?.snippet?.description}</p>
                 </Col>
             </Row>
+            <div className="d-flex justify-content-end px-3">
+                <FcLike size="1.5rem" style={{cursor: "pointer"}} onClick={onHeartClick}/>
+            </div>
         </div>
     )
 }
