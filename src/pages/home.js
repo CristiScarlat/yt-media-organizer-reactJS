@@ -6,14 +6,9 @@ import PageNavigator from "../components/pageNavigator/pageNavigator";
 
 
 const Home = () => {
-    const [data, setData] = useState();
-    const { darkMode, searchTerm, setModalData } = useContext(Ctx);
 
-    useEffect(() => {
-        if (searchTerm && searchTerm !== "") {
-            searchYoutube(searchTerm)
-        }
-    }, [searchTerm])
+    const { darkMode, searchTerm, setModalData, data, setData } = useContext(Ctx);
+
 
     const searchYoutube = (query, pageToken) => {
         ytSearch(query, pageToken)
@@ -23,7 +18,7 @@ const Home = () => {
                     window.scrollTo(0, 0);
                 }
             })
-            .catch(error => console.log(error))
+            .catch(error => console.log(error.data.error))
     }
 
     const handleNextPage = () => {
@@ -43,6 +38,7 @@ const Home = () => {
             show: true,
             title: obj?.snippet?.title || "",
             form: true,
+            data: obj
         })
     }
 

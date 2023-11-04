@@ -11,36 +11,28 @@ const Provider = ({ children }) => {
     const storedSearchHistoryStr = localStorage.getItem("searchHistory");
     const storedSearchHistory = storedSearchHistoryStr ? JSON.parse(storedSearchHistoryStr) : [];
 
+    const storedFavoritesStr = localStorage.getItem("favorites");
+    const storedFavorites = storedFavoritesStr ? JSON.parse(storedFavoritesStr) : [];
+
+
     const [darkMode, setDarkMode] = useState(storedDarkMode);
-    const [searchTerm, setSearchTerm] = useState(false);
+    const [data, setData] = useState();
     const [searchHistory, setSearchHistory] = useState(storedSearchHistory);
-    const [favorites, setFavorites] = useState([
-        {
-            name: "Music",
-            fodlers: [
-                {
-                    name: "Rock",
-                    mediaItems: []
-                },
-                {
-                    name: "Jazz",
-                    mediaItems: []
-                }
-            ]
-        }
-    ]);
+    const [favorites, setFavorites] = useState(storedFavorites);
     const [modalData, setModalData] = useState({
         show: false,
         title: "",
-        children: null
+        children: null,
+        form: null,
+        data: null
     });
 
     return <Ctx.Provider 
     value={{
         darkMode, 
         setDarkMode, 
-        searchTerm, 
-        setSearchTerm, 
+        data,
+        setData,
         searchHistory, 
         setSearchHistory,
         modalData, 

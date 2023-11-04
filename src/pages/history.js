@@ -2,13 +2,20 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Ctx } from "../context/store";
 import { Card, Button } from "react-bootstrap";
+import { ytSearch } from "../services/yt";
 
 const History = () => {
-    const { darkMode, searchHistory, setSearchTerm, setSearchHistory } = useContext(Ctx);
+    const { darkMode, searchHistory, setData, setSearchHistory } = useContext(Ctx);
     const navigate = useNavigate();
 
     const handleSearchAgain = (searchQuery) => {
-        setSearchTerm(searchQuery);
+        ytSearch(searchQuery)
+            .then(res => {
+                if (res.status === 200) {
+                    setData(res.data);
+                }
+            })
+            .catch(error => console.log(error.data.error))
         navigate("/");
     }
 
@@ -23,7 +30,8 @@ const History = () => {
             <div>
             {searchHistory.map((historyItem) => (
                 <Card
-                    style={{ width: '18rem', margin: "1rem" }}
+                    key={historyItem.date}
+                    style={{ margin: "1rem" }}
                     bg={darkMode ? "dark" : "light"}
                     text={darkMode ? "white" : "dark"}
                 >

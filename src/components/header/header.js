@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Ctx } from '../../context/store';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -8,12 +8,16 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { GoSun, GoMoon } from 'react-icons/go';
+import { ytSearch } from "../../services/yt";
 
 
 
 const Header = () => {
-    const { setDarkMode, darkMode, setSearchTerm, setSearchHistory, searchHistory } = useContext(Ctx);
+    const { setDarkMode, darkMode, setData, setSearchHistory, searchHistory } = useContext(Ctx);
     const expand = 'lg'
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const handleDarkMode = () => {
         setDarkMode(state => {
@@ -25,7 +29,13 @@ const Header = () => {
     const handleSearchTerm = (e) => {
         e.preventDefault();
         if(e.target[0].value && e.target[0].value !== ""){
-            setSearchTerm(e.target[0].value);
+            ytSearch(e.target[0].value)
+            .then(res => {
+                if (res.status === 200) {
+                    setData(res.data);
+                }
+            })
+            .catch(error => console.log(error.data.error))
             if(!searchHistory.find(item => item.q === e.target[0].value)){
                 const historyObj = {
                     date: new Date().toString(),
@@ -37,9 +47,10 @@ const Header = () => {
                 })
             }
         }
+        if(location.pathname === "/")return;
+        navigate("/")
     }
 
-    console.log(searchHistory)
     return (
         <>
             <Navbar expand={expand} bg={darkMode ? "dark" : "light"} variant={darkMode ? "dark" : "light"} fixed='top'>
@@ -60,6 +71,7 @@ const Header = () => {
                             <Nav className="justify-content-end flex-grow-1 pe-3">
                                 <Link to="/" className="nav-link">Home</Link>
                                 <Link to="/history" className="nav-link">History</Link>
+                                <Link to="/favorites" className="nav-link">Favorites</Link>
                             </Nav>
                             <Form className="d-flex" onSubmit={handleSearchTerm}>
                                 <Form.Control

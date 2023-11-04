@@ -1,14 +1,76 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Ctx } from "../../context/store";
 import { Modal as BsModal, Button } from "react-bootstrap";
 import { Form, InputGroup } from "react-bootstrap";
+import _ from "lodash";
 
 const Modal = () => {
     const [selectedCategory, setSelectedCategory] = useState();
-    const { modalData: { show, title, children, form }, setModalData, favorites, setFavorites } = useContext(Ctx);
+    const [selectedFolder, setSelectedFolder] = useState();
+    const { modalData: { show, title, children, form, data }, setModalData, favorites, setFavorites } = useContext(Ctx);
+
+    const categoryName = useRef();
+    const folderName = useRef();
+
+    const handleAddCategory = () => {
+        const value = categoryName.current.value;
+        if (value && value !== "") {
+            const cat = {
+                name: value,
+                folders: []
+            }
+            setFavorites([...favorites, cat])
+        }
+    }
+
 
     const handleSelectCategory = (e) => {
         setSelectedCategory(e.target.value)
+    }
+
+    const handleSelectFolder = (e) => {
+        setSelectedFolder(e.target.value)
+    }
+
+    const handleAddFolder = () => {
+        const value = folderName.current.value;
+        if (value && value !== "") {
+            const clonedFavorites = _.cloneDeep(favorites);
+            const foundCategory = clonedFavorites.find(fav => fav.name === selectedCategory);
+            foundCategory.folders.push({
+                name: value,
+                mediaItems: []
+            })
+            setFavorites(clonedFavorites);
+        }
+    }
+
+    const renderFoldersList = () => {
+        if(selectedCategory){
+            const foundCategory = favorites.find(fav => fav.name === selectedCategory);
+            return foundCategory.folders.map(folder => <option value={folder.name}>{folder.name}</option>)
+        }
+        return null;
+    }
+
+    const handleSave = () => {
+        const clonedFavorites = _.cloneDeep(favorites);
+        const foundCategory = clonedFavorites.find(fav => fav.name === selectedCategory);
+        const foundFolder = foundCategory.folders.find(folder => folder.name === selectedFolder);
+        const foundMediaItem = foundFolder.mediaItems.find(mediaItem => mediaItem.id.videoId === data.id.videoId);
+        if(!foundMediaItem){
+            foundFolder.mediaItems.push(data);
+            setFavorites(clonedFavorites);
+            localStorage.setItem("favorites", JSON.stringify(clonedFavorites));
+            setModalData({
+                show: false
+            })
+            return
+        }
+        setModalData({
+            show: false
+        })
+        alert("Item already added in favorites!");
     }
 
     return (
@@ -35,8 +97,9 @@ const Modal = () => {
                                 placeholder="New Category"
                                 aria-label="New Category"
                                 aria-describedby="new-category"
+                                ref={categoryName}
                             />
-                            <Button variant="outline-secondary" id="new-category">
+                            <Button variant="outline-secondary" id="new-category" onClick={handleAddCategory}>
                                 Add Category
                             </Button>
                         </InputGroup>
@@ -55,17 +118,18 @@ const Modal = () => {
                                 aria-label="New Folder"
                                 aria-describedby="new-folder"
                                 disabled={!selectedCategory}
+                                ref={folderName}
                             />
-                            <Button variant="outline-secondary" id="new-folder">
+                            <Button variant="outline-secondary" id="new-folder" onClick={handleAddFolder}>
                                 Add Folder
                             </Button>
                         </InputGroup>
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Select Folder</Form.Label>
-                        <Form.Select disabled={!selectedCategory}>
-                            <option>Folder-1</option>
-                            <option>Folder-2</option>
+                        <Form.Select disabled={!selectedCategory} defaultValue={0}  onChange={handleSelectFolder}>
+                            <option value={0} disabled>Select Folder</option>
+                            {renderFoldersList()}
                         </Form.Select>
                     </Form.Group>
                     {/* <Form.Group className="mb-3">
@@ -74,7 +138,7 @@ const Modal = () => {
                 </div> : children}
             </BsModal.Body>
             <BsModal.Footer>
-                <Button>Close</Button>
+                <Button onClick={handleSave}>Save</Button>
             </BsModal.Footer>
         </BsModal>
     )
