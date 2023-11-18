@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FcLike } from "react-icons/fc";
 
 
-const PreviewCard = ({ data, className, theme, onHeartClick }) => {
+const PreviewCard = ({ data, className, theme, onHeartClick, showHeartButton=true }) => {
     const [iframeOnLoad, setIframeOnLoad] = useState(false);
 
     return (
@@ -29,7 +29,7 @@ const PreviewCard = ({ data, className, theme, onHeartClick }) => {
                 </Col>
             </Row>
             <div className="d-flex justify-content-end px-3">
-                <FcLike size="1.5rem" style={{cursor: "pointer"}} onClick={onHeartClick}/>
+                {showHeartButton && <FcLike size="1.5rem" style={{cursor: "pointer"}} onClick={onHeartClick}/>}
             </div>
         </div>
     )
