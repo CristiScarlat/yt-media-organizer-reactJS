@@ -18,6 +18,7 @@ const Provider = ({ children }) => {
     const [darkMode, setDarkMode] = useState(storedDarkMode);
     const [data, setData] = useState();
     const [searchHistory, setSearchHistory] = useState(storedSearchHistory);
+    const [searchTerm, setSearchTerm] = useState();
     const [favorites, setFavorites] = useState(storedFavorites);
     const [modalData, setModalData] = useState({
         show: false,
@@ -35,6 +36,8 @@ const Provider = ({ children }) => {
         setData,
         searchHistory, 
         setSearchHistory,
+        searchTerm,
+        setSearchTerm,
         modalData, 
         setModalData,
         favorites, 

@@ -13,7 +13,7 @@ import { ytSearch } from "../../services/yt";
 
 
 const Header = () => {
-    const { setDarkMode, darkMode, setData, setSearchHistory, searchHistory } = useContext(Ctx);
+    const { setDarkMode, darkMode, setData, setSearchHistory, searchHistory, setSearchTerm } = useContext(Ctx);
     const expand = 'lg'
 
     const location = useLocation();
@@ -33,6 +33,7 @@ const Header = () => {
             .then(res => {
                 if (res.status === 200) {
                     setData(res.data);
+                    setSearchTerm(e.target[0].value);
                 }
             })
             .catch(error => console.log(error.data.error))

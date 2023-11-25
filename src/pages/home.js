@@ -58,6 +58,8 @@ const Home = () => {
                     style={{ width: "fit-content" }}
                     nextOnClick={handleNextPage}
                     prevOnClick={handlePrevPage}
+                    nextButtonDisabled={!data.nextPageToken}
+                    prevButtonDisabled={!data.prevPageToken}
                 />}
 
         </main>
