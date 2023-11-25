@@ -25,10 +25,19 @@ const History = () => {
         localStorage.setItem("searchHistory", JSON.stringify(newArray))
     }
 
+    const reverseArray = (list) => {
+        const reversedList = []
+        const length = list.length;
+        for(let i=length-1; i>0; i--){
+            reversedList.push(list[i]);
+        }
+        return reversedList;
+    }
+
     return (
         <main className={`${darkMode && "dark-mode"}`}>
             <div>
-            {searchHistory.map((historyItem) => (
+            {reverseArray(searchHistory).map((historyItem) => (
                 <Card
                     key={historyItem.date}
                     style={{ margin: "1rem" }}

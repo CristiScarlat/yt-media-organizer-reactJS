@@ -52,7 +52,7 @@ const Home = () => {
                     theme={darkMode}
                     onHeartClick={() => handleOpenModal(item)} />
             ))}
-            {data?.items?.length > 0 &&
+            {data?.items?.length > 0 ?
                 <PageNavigator
                     className="mx-auto my-3 gap-2"
                     style={{ width: "fit-content" }}
@@ -60,8 +60,7 @@ const Home = () => {
                     prevOnClick={handlePrevPage}
                     nextButtonDisabled={!data.nextPageToken}
                     prevButtonDisabled={!data.prevPageToken}
-                />}
-
+                /> : <p className={`${darkMode ? "text-white" : ""} h3 text-center m-5`}>You have to search for something!</p>}
         </main>
     )
 }
