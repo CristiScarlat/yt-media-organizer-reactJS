@@ -4,6 +4,8 @@ import { Modal as BsModal, Button } from "react-bootstrap";
 import { Form, InputGroup } from "react-bootstrap";
 import _ from "lodash";
 
+
+//TODO create dark mode for modal also
 const Modal = () => {
     const [selectedCategory, setSelectedCategory] = useState();
     const [selectedFolder, setSelectedFolder] = useState();

@@ -1,8 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, Fragment } from "react";
 import { Ctx } from "../context/store";
 import { FcFolder, FcDownLeft } from "react-icons/fc";
 import PreviewCard from "../components/previewCard/previewCard";
 
+
+//TODO open folders by onTouch event also for mobile
 const FavoritesPage = () => {
     const [foldersList, setFoldersList] = useState([]);
     const [bradCrump, setBradCrump] = useState([]);
@@ -55,7 +57,7 @@ const FavoritesPage = () => {
     }
 
     return (
-        <main className={`${darkMode && "dark-mode"}`}>
+        <main className={`${darkMode && "dark-mode"} mt-lg-5`}>
             <div className="d-flex justify-content-between align-items-center">
                 <div>
                     {bradCrump.length === 0 ? <h5 className="text-white ms-5 mr-auto mt-3">Favorites</h5> : <>
@@ -64,10 +66,10 @@ const FavoritesPage = () => {
                         </div>
                         <div className="ms-5 mt-3 d-flex gap-3" style={{ color: "#3f51b5" }}>
                             {bradCrump.map((bradCrumpItem, index) => (
-                                <>
+                                <Fragment key={index}>
                                     <span>{bradCrumpItem}</span>
                                     {index < bradCrump.length - 1 && <span>{` / `}</span>}
-                                </>
+                                </Fragment>
                             ))}
                         </div>
                     </>}

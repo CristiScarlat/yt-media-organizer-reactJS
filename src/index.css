@@ -16,11 +16,38 @@ body {
 
 main {
   flex: 1;
-  margin-top: 3.5rem;
   scroll-behavior: smooth;
 }
 
 .dark-mode {
   background-color: black;
   color: whitesmoke;
+}
+
+.offcanvas {
+  max-width: 60%!important;
+}
+
+.offcanvas-dark {
+  background-color: var(--bs-dark)!important;
+  color: white!important;
+}
+
+.button-no-style {
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+.nav-link-current {
+  font-weight: 800!important;
+
+}
+
+
+@media screen and (max-width: 576px){
+  iframe {
+    width: 100%;
+    height: auto;
+  }
 }

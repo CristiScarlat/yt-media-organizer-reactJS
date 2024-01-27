@@ -11,7 +11,7 @@ const PreviewCard = ({ data, className, theme, onHeartClick, showHeartButton=tru
         <div className={`${className} preview-card-wrapper`}>
             <Row>
                 <Col xs={12} lg={6}>
-                    <div style={{position: "relative", width: "fit-content"}}>
+                    <div style={{position: "relative"}}>
                         <iframe
                             style={{visibility: iframeOnLoad ? "visible" : "hidden"}}
                             onLoad={() => setIframeOnLoad(true)}

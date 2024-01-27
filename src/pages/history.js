@@ -35,7 +35,7 @@ const History = () => {
     }
 
     return (
-        <main className={`${darkMode && "dark-mode"}`}>
+        <main className={`${darkMode && "dark-mode"} mt-lg-5`}>
             <div>
             {reverseArray(searchHistory).map((historyItem) => (
                 <Card

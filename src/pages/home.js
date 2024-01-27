@@ -43,12 +43,12 @@ const Home = () => {
     }
 
     return (
-        <main className={`${darkMode && "dark-mode"}`}>
+        <main className={`${darkMode && "dark-mode"} mt-lg-5`}>
             {data?.items && data.items.map(item => (
                 <PreviewCard
                     key={item.id.videoId}
                     data={item}
-                    className="mx-auto my-3"
+                    className="mx-lg-auto my-3"
                     theme={darkMode}
                     onHeartClick={() => handleOpenModal(item)} />
             ))}
