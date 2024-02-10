@@ -28,6 +28,8 @@ const Provider = ({ children }) => {
         data: null
     });
 
+
+
     return <Ctx.Provider 
     value={{
         darkMode, 

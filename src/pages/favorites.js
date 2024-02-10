@@ -2,13 +2,14 @@ import { useContext, useState, useEffect, Fragment } from "react";
 import { Ctx } from "../context/store";
 import { FcFolder, FcDownLeft } from "react-icons/fc";
 import PreviewCard from "../components/previewCard/previewCard";
+import _ from "lodash";
 
 
 //TODO open folders by onTouch event also for mobile
 const FavoritesPage = () => {
     const [foldersList, setFoldersList] = useState([]);
     const [bradCrump, setBradCrump] = useState([]);
-    const { darkMode, favorites } = useContext(Ctx);
+    const { darkMode, favorites, setFavorites } = useContext(Ctx);
 
     useEffect(() => {
         setFoldersList(favorites);
@@ -16,7 +17,7 @@ const FavoritesPage = () => {
     }, [])
 
     const handleEnterCategory = (e, name) => {
-        e.preventDefault();
+        //e.preventDefault();
         const foundCategoryObj = foldersList.find(fav => fav.name === name);
         if (foundCategoryObj?.folders) setFoldersList(foundCategoryObj.folders);
         else {
@@ -49,11 +50,26 @@ const FavoritesPage = () => {
     }
 
     const handleOnClickRight = (e) => {
-        e.preventDefault();
+        //e.preventDefault();
         if(e.type === "contextmenu"){
             console.log("click dreapta", e)
         }
 
+    }
+
+    const handleDeleteFavorite = (data) => {
+        const clonedFavorites = _.cloneDeep(favorites);
+        let recursiveArray = clonedFavorites;
+        bradCrump.forEach(key => {
+            const found = recursiveArray.find(obj => obj.name === key);
+            if(found?.folders)recursiveArray = found.folders;
+            else if(found.mediaItems)recursiveArray = found.mediaItems;
+        })
+        const indexToDelete = recursiveArray.findIndex(mediaItem => mediaItem.id.videoId === data.id.videoId);
+        recursiveArray.splice(indexToDelete, 1);
+        setFoldersList(recursiveArray)
+        setFavorites(clonedFavorites);
+        localStorage.setItem("favorites", JSON.stringify(clonedFavorites));
     }
 
     return (
@@ -79,7 +95,7 @@ const FavoritesPage = () => {
                 </div>
             </div>
             <hr className="m-1"/>
-            <div className="d-flex m-5 mt-1 gap-5">
+            <div className="d-flex flex-wrap m-5 mt-1 gap-5">
                 {foldersList.map(folder => {
                     return folder.id ?
                         <PreviewCard
@@ -88,13 +104,15 @@ const FavoritesPage = () => {
                             className="mx-auto my-3"
                             theme={darkMode}
                             showHeartButton={false}
+                            showDeleteButton={true}
+                            onDeleteClick={handleDeleteFavorite}
                         />
                         :
                         <div key={folder.name}
                             className="text-center"
                             style={{ cursor: "pointer" }}
                             onDoubleClick={(e) => handleEnterCategory(e, folder.name)}
-                            //onClick={handleOnClick}
+                            onTouchStart={(e) => handleEnterCategory(e, folder.name)}
                             onContextMenu={(e) => handleOnClickRight(e, folder.name)}>
                             <FcFolder size="4rem" />
                             <p className="m-0">{folder.name}</p>

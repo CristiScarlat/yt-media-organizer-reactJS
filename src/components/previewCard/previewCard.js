@@ -1,10 +1,10 @@
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Row, Spinner, Button } from "react-bootstrap";
 import "./previewCard.css";
 import { useState } from "react";
 import { FcLike } from "react-icons/fc";
 
 
-const PreviewCard = ({ data, className, theme, onHeartClick, showHeartButton=true }) => {
+const PreviewCard = ({ data, className, theme, onHeartClick, onDeleteClick, showHeartButton=true, showDeleteButton=false }) => {
     const [iframeOnLoad, setIframeOnLoad] = useState(false);
 
     return (
@@ -30,6 +30,7 @@ const PreviewCard = ({ data, className, theme, onHeartClick, showHeartButton=tru
             </Row>
             <div className="d-flex justify-content-end px-3">
                 {showHeartButton && <FcLike size="1.5rem" style={{cursor: "pointer"}} onClick={onHeartClick}/>}
+                {showDeleteButton && <Button variant="danger" onClick={() => onDeleteClick(data)}>Delete</Button>}
             </div>
         </div>
     )
