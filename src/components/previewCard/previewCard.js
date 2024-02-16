@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FcLike } from "react-icons/fc";
 
 
-const PreviewCard = ({ data, className, theme, onHeartClick, onDeleteClick, showHeartButton=true, showDeleteButton=false }) => {
+const PreviewCard = ({ data, className, theme, onHeartClick, onDeleteClick, onDownloadClick, showHeartButton=true, showDeleteButton=false, showDownloadButton=false }) => {
     const [iframeOnLoad, setIframeOnLoad] = useState(false);
 
     return (
@@ -28,9 +28,10 @@ const PreviewCard = ({ data, className, theme, onHeartClick, onDeleteClick, show
                     <p>{data?.snippet?.description}</p>
                 </Col>
             </Row>
-            <div className="d-flex justify-content-end px-3">
+            <div className="d-flex justify-content-end align-items-center gap-2 px-3">
                 {showHeartButton && <FcLike size="1.5rem" style={{cursor: "pointer"}} onClick={onHeartClick}/>}
                 {showDeleteButton && <Button variant="danger" onClick={() => onDeleteClick(data)}>Delete</Button>}
+                {showDownloadButton && <Button variant="success" onClick={() => onDownloadClick(data)}>Download</Button>}
             </div>
         </div>
     )

@@ -3,6 +3,8 @@ import { Ctx } from "../context/store";
 import { ytSearch } from "../services/yt";
 import PreviewCard from "../components/previewCard/previewCard";
 import PageNavigator from "../components/pageNavigator/pageNavigator";
+import { download } from "../services/downloader";
+import FileSaver from 'file-saver';
 
 
 const Home = () => {
@@ -42,6 +44,39 @@ const Home = () => {
         })
     }
 
+    const handleDownloadVideo = async (videoUrl) => {
+        try {
+          const videoRequest = new Request(videoUrl);
+          fetch(videoRequest)
+            .then(() => {
+              const link = document.createElement('a');
+              link.href = videoUrl;
+              //link.setAttribute('download', 'waterfall.mp4');
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            });
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+    const handleDownload = async (data) => {
+        try{
+            const videoId = data?.id?.videoId;
+            console.log("start")
+            const res = await download(videoId);
+            console.log(res)
+            const blob = new Blob([res.data],{
+                type: 'application/octet-stream'
+            });
+            FileSaver.saveAs(blob, "download.mp4");
+        }
+        catch(error){
+            console.log(error)
+        } 
+    }
+
     return (
         <main className={`${darkMode && "dark-mode"} mt-lg-5`}>
             {data?.items && data.items.map(item => (
@@ -50,7 +85,9 @@ const Home = () => {
                     data={item}
                     className="mx-lg-auto my-3"
                     theme={darkMode}
-                    onHeartClick={() => handleOpenModal(item)} />
+                    onHeartClick={() => handleOpenModal(item)} 
+                    showDownloadButton={true}
+                    onDownloadClick={handleDownload}/>
             ))}
             {data?.items?.length > 0 ?
                 <PageNavigator
