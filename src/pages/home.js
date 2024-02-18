@@ -9,6 +9,7 @@ import FileSaver from 'file-saver';
 
 const Home = () => {
 
+    const [downloading, setDownloading] = useState(null);
     const { darkMode, searchTerm, setModalData, data, setData } = useContext(Ctx);
 
 
@@ -63,6 +64,7 @@ const Home = () => {
 
     const handleDownload = async (data) => {
         try{
+            setDownloading(data?.id?.videoId)
             const videoId = data?.id?.videoId;
             console.log("start")
             const res = await download(videoId);
@@ -71,9 +73,11 @@ const Home = () => {
                 type: 'application/octet-stream'
             });
             FileSaver.saveAs(blob, "download.mp4");
+            setDownloading(null);
         }
         catch(error){
-            console.log(error)
+            console.log(error);
+            setDownloading(null);
         } 
     }
 
@@ -87,7 +91,8 @@ const Home = () => {
                     theme={darkMode}
                     onHeartClick={() => handleOpenModal(item)} 
                     showDownloadButton={true}
-                    onDownloadClick={handleDownload}/>
+                    onDownloadClick={handleDownload}
+                    downloading={downloading}/>
             ))}
             {data?.items?.length > 0 ?
                 <PageNavigator
