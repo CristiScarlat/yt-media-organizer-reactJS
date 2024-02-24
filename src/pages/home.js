@@ -82,6 +82,10 @@ const Home = () => {
         } 
     }
 
+    //TODO add empty heart for items not add yet to favorites
+    //TODO investigate download not working on mobile
+    //TODO investigate touch and longtouch for file navigation on mobile
+
     return (
         <main className={`${darkMode && "dark-mode"} mt-lg-5`}>
             {data?.items && data.items.map(item => (
