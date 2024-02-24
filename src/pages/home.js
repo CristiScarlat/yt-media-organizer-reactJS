@@ -68,11 +68,12 @@ const Home = () => {
             const videoId = data?.id?.videoId;
             console.log("start")
             const res = await download(videoId);
-            console.log(res)
+            
+            const filename = res.request.getResponseHeader('Content-Disposition')?.split("=")[1]?.replaceAll('"', "") || "download.mp4";
             const blob = new Blob([res.data],{
                 type: 'application/octet-stream'
             });
-            FileSaver.saveAs(blob, "download.mp4");
+            FileSaver.saveAs(blob, filename);
             setDownloading(null);
         }
         catch(error){
