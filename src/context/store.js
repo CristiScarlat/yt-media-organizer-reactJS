@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { auth, signOut } from "../firebase/fb";
 
 export const Ctx = createContext();
 
@@ -28,7 +29,15 @@ const Provider = ({ children }) => {
         data: null
     });
 
-
+    //TODO setUser also in sassionStorage
+    const [user, setUser] = useState();
+  
+    const handleSignout = () => {
+        signOut(auth)
+        .then((res) => {
+            setUser(null)
+        })
+    }
 
     return <Ctx.Provider 
     value={{
@@ -43,7 +52,10 @@ const Provider = ({ children }) => {
         modalData, 
         setModalData,
         favorites, 
-        setFavorites
+        setFavorites, 
+        user,
+        setUser,
+        handleSignout
     }}>{children}</Ctx.Provider>
 }
 

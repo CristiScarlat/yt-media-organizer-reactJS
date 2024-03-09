@@ -14,7 +14,7 @@ import { ytSearch } from "../../services/yt";
 
 const Header = () => {
     const [offcanvasState, setOffcanvasState] = useState(false);
-    const { setDarkMode, darkMode, setData, setSearchHistory, searchHistory, setSearchTerm } = useContext(Ctx);
+    const { setDarkMode, darkMode, setData, setSearchHistory, searchHistory, setSearchTerm, user, handleSignout} = useContext(Ctx);
     const expand = 'lg'
 
     const location = useLocation();
@@ -50,12 +50,18 @@ const Header = () => {
             }
         }
         if (location.pathname === "/") return;
-        navigate("/")
+        navigate("/");
     }
 
     const handleCloseOffcanvas = () => {
         setOffcanvasState(false);
     }
+
+    const redirectToLogin = () => {
+        navigate("/login");
+    }
+
+    console.log("este user", user)
 
     return (
         <>
@@ -86,8 +92,8 @@ const Header = () => {
                         <Offcanvas.Body>
                             <Nav className="justify-content-end flex-grow-1 pe-3" onChange={() => console.log("on select")}>
                                 <Link to="/" className={`${location.pathname === "/" ? "nav-link-current" : ""} nav-link`} onClick={handleCloseOffcanvas}>Home</Link>
-                                <Link to="/history" className={`${location.pathname === "/history" ? "nav-link-current" : ""} nav-link`} onClick={handleCloseOffcanvas}>History</Link>
-                                <Link to="/favorites" className={`${location.pathname === "/favorites" ? "nav-link-current" : ""} nav-link`} onClick={handleCloseOffcanvas}>Favorites</Link>
+                                {user && <Link to="/history" className={`${location.pathname === "/history" ? "nav-link-current" : ""} nav-link`} onClick={handleCloseOffcanvas}>History</Link>}
+                                {user && <Link to="/favorites" className={`${location.pathname === "/favorites" ? "nav-link-current" : ""} nav-link`} onClick={handleCloseOffcanvas}>Favorites</Link>}
                             </Nav>
                             <Form className="d-lg-flex d-none" onSubmit={handleSearchTerm} name="search">
                                 <Form.Control
@@ -103,6 +109,11 @@ const Header = () => {
                                 {darkMode ? <button className="button-no-style ms-lg-3 p-0" onClick={handleDarkMode}><span className="me-2 d-lg-none">Dark Mode</span><GoSun size="1.2rem" color="white" /></button>
                                     :
                                     <button className="button-no-style ms-lg-3 p-0" onClick={handleDarkMode} ><span className="me-2 d-lg-none">Light Mode</span><GoMoon size="1.2rem" /></button>}
+                            </div>
+                            <div className="ms-0 me-3 d-flex align-items-center" style={{ cursor: "pointer" }}>
+                                {user ? <button className="button-no-style ms-lg-3 p-0" onClick={handleSignout}>Sign out</button>
+                                    :
+                                    <button className="button-no-style ms-lg-3 p-0" onClick={redirectToLogin}>Login</button>}
                             </div>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>

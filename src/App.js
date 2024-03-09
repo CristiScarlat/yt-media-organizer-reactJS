@@ -4,7 +4,8 @@ import Home from "./pages/home";
 import History from "./pages/history";
 import Modal from "./components/modal/modal";
 import FavoritesPage from "./pages/favorites";
-
+import PrivateRoute from "./components/privateRoute/privateRoute";
+import LoginPage from "./pages/login";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Header />
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/history" element={<PrivateRoute><History /></PrivateRoute>} />
+          <Route path="/favorites" element={<PrivateRoute><FavoritesPage /></PrivateRoute>} />
+          <Route path="/login" element={<LoginPage/>}/>
         </Routes>
         <Modal />
     </Router>

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Ctx } from "../context/store";
 import { ytSearch } from "../services/yt";
 import PreviewCard from "../components/previewCard/previewCard";
@@ -83,7 +83,7 @@ const Home = () => {
     }
 
     //TODO add empty heart for items not add yet to favorites
-    //TODO investigate download not working on mobile
+    //TODO investigate download not working on mobile - it is now working
     //TODO investigate touch and longtouch for file navigation on mobile
 
     return (
